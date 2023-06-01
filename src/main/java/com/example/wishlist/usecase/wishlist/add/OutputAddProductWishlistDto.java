@@ -21,6 +21,7 @@ public class OutputAddProductWishlistDto {
 
     public OutputAddProductWishlistDto(Wishlist wishlist) {
         this.id = wishlist.getId();
+        this.total = wishlist.getTotal();
         this.customer = new OutAddCustomer(wishlist.getCustomer());
         this.products = wishlist.getProducts().stream().map(OutAddProduct::new).collect(Collectors.toSet());
     }

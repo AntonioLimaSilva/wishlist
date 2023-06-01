@@ -22,6 +22,7 @@ public class OutputRemoveProductWishlistDto {
 
     public OutputRemoveProductWishlistDto(Wishlist wishlist) {
         this.id = wishlist.getId();
+        this.total = wishlist.getTotal();
         this.customer = new OutputRemoveProductWishlistDto.OutRemoveCustomer(wishlist.getCustomer());
         this.products = wishlist.getProducts().stream().map(OutputRemoveProductWishlistDto.OutRemoveProduct::new).collect(Collectors.toList());
     }
