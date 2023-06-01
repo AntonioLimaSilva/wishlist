@@ -26,7 +26,7 @@ public class WishGatewayImpl implements WishGateway {
 
     @Override
     public Wishlist findBy(String wishlist) {
-    return wishlistRepository.findById(wishlist).map(WishlistEntity::toDomain).orElseThrow(() -> new RuntimeException(""));
+    return wishlistRepository.findById(wishlist).map(WishlistEntity::toDomain).orElseThrow(() -> new BusinessException("Id wishlist not exits"));
     }
 
     @Override
