@@ -1,6 +1,5 @@
-package com.example.wishlist.usecase.wishlist.add;
+package com.example.wishlist.usecase.wishlist.find;
 
-import com.example.wishlist.domain.Wishlist;
 import com.example.wishlist.gateway.WishGateway;
 import com.example.wishlist.gateway.mongodb.WishGatewayImpl;
 import com.example.wishlist.gateway.mongodb.entity.customer.CustomerEntity;
@@ -17,8 +16,8 @@ import org.mockito.quality.Strictness;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,28 +25,28 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 @ActiveProfiles(value = "local")
-public class AddProductWishlistUseCaseTestEntity {
+public class FindProductWishlistUseCaseTest {
 
     WishlistRepository wishlistRepository;
     WishGateway wishGateway;
-    AddProductWishlistUseCase addUseCase;
+    FindProductWishlistUseCase findUseCase;
 
-    public AddProductWishlistUseCaseTestEntity() {
+    public FindProductWishlistUseCaseTest() {
         wishlistRepository = mock(WishlistRepository.class);
         wishGateway = new WishGatewayImpl(wishlistRepository);
-        addUseCase = new AddProductWishlistUseCase(wishGateway);
+        findUseCase = new FindProductWishlistUseCase(wishGateway);
     }
 
     @Test
     @DisplayName("Deve adicionar um produto na wishlist")
-    void shouldAddProductOfWishlist() {
+    void shouldFindProductOfWishlist() {
 
-        var input = inputAddWishlistDtoMock();
-        var wishlist = wishlistMock();
+        var input = inputFindWishlistDtoMock();
+        var wishlist = inputAddWishlistDtoMock();
 
-        when(wishlistRepository.save(wishlist)).thenReturn(wishlist);
+        when(wishlistRepository.findById(input.getIdWishlist())).thenReturn(Optional.of(wishlist));
 
-        var out = addUseCase.addProductInWishlistOfCustomer(input);
+        var out = findUseCase.findProductInWishlistOfCustomer("1", "TV");
 
         Assertions.assertNotNull(out);
         Assertions.assertNotNull(out.getTotal());
@@ -56,32 +55,20 @@ public class AddProductWishlistUseCaseTestEntity {
     }
 
     @DisplayName("Cria mock da wishlist input")
-    public Wishlist inputAddWishlistDtoMock() {
-        var input = new Wishlist();
-        var customer = new com.example.wishlist.domain.Customer();
+    public InputFindProductWishlistDto inputFindWishlistDtoMock() {
+        return new InputFindProductWishlistDto("1", "TV");
+    }
+
+    @DisplayName("Cria mock da wishlist input")
+    public WishlistEntity inputAddWishlistDtoMock() {
+        var input = new WishlistEntity();
+        var customer = new CustomerEntity();
         customer.setName("Joa0 da Silva");
-        var product = new com.example.wishlist.domain.Product();
+        var product = new ProductEntity();
         product.setName("TV");
         product.setPrice(new BigDecimal("1200"));
         input.setCustomer(customer);
         input.setProducts(List.of(product));
         return input;
-    }
-
-    @DisplayName("Cria mock da wishlist")
-    private WishlistEntity wishlistMock() {
-        var customer = new CustomerEntity();
-        customer.setName("Joao silva");
-        var product = new ProductEntity();
-        product.setName("TV");
-        product.setPrice(new BigDecimal("1200"));
-        var list = new ArrayList<ProductEntity>();
-        list.add(product);
-        var wishlist = new WishlistEntity();
-        wishlist.setId("1");
-        wishlist.setCustomerEntity(customer);
-        wishlist.setProductEntities(list);
-        wishlist.setTotal(new BigDecimal("1200"));
-        return wishlist;
     }
 }

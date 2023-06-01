@@ -1,9 +1,10 @@
-package com.example.wishlist.usecase.wishlist.list;
+package com.example.wishlist.usecase.wishlist.add;
 
+import com.example.wishlist.domain.Customer;
+import com.example.wishlist.domain.Product;
+import com.example.wishlist.domain.Wishlist;
 import com.example.wishlist.gateway.WishGateway;
 import com.example.wishlist.gateway.mongodb.WishGatewayImpl;
-import com.example.wishlist.gateway.mongodb.entity.customer.CustomerEntity;
-import com.example.wishlist.gateway.mongodb.entity.product.ProductEntity;
 import com.example.wishlist.gateway.mongodb.entity.wishlist.WishlistEntity;
 import com.example.wishlist.gateway.mongodb.repository.WishlistRepository;
 import org.junit.jupiter.api.Assertions;
@@ -17,36 +18,37 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 @ActiveProfiles(value = "local")
-public class ListProductsWishlistUseCaseTest {
+public class AddProductWishlistUseCaseTest {
 
     WishlistRepository wishlistRepository;
     WishGateway wishGateway;
-    ListProductsWishlistUseCase listUseCase;
+    AddProductWishlistUseCase addUseCase;
 
-    public ListProductsWishlistUseCaseTest() {
+    public AddProductWishlistUseCaseTest() {
         wishlistRepository = mock(WishlistRepository.class);
         wishGateway = new WishGatewayImpl(wishlistRepository);
-        listUseCase = new ListProductsWishlistUseCase(wishGateway);
+        addUseCase = new AddProductWishlistUseCase(wishGateway);
     }
 
     @Test
-    @DisplayName("Deve listar todos os produto na wishlist")
-    void shouldListAllProductOfWishlist() {
+    @DisplayName("Deve adicionar um produto na wishlist")
+    void shouldAddProductOfWishlist() {
 
-        var input = inputListWishlistDtoMock();
-        var wishlist = wishlistMock();
+        var input = inputAddWishlistDtoMock();
+        var wishlistEntity = new WishlistEntity(wishlistDomainMock());
 
-        when(wishlistRepository.findById(input.getIdWishlist())).thenReturn(Optional.of(wishlist));
+        when(wishlistRepository.save(any())).thenReturn(wishlistEntity);
 
-        var out = listUseCase.findAllProductsInWishlistOfCustomerBy("1");
+        var out = addUseCase.addProductInWishlistOfCustomer(input);
 
         Assertions.assertNotNull(out);
         Assertions.assertNotNull(out.getTotal());
@@ -55,20 +57,28 @@ public class ListProductsWishlistUseCaseTest {
     }
 
     @DisplayName("Cria mock da wishlist input")
-    public InputListProductsWishlistDto inputListWishlistDtoMock() {
-        return new InputListProductsWishlistDto("1");
-    }
-
-    @DisplayName("Cria mock da wishlist")
-    private WishlistEntity wishlistMock() {
-        var customer = new CustomerEntity();
-        customer.setName("Joao silva");
-        var product = new ProductEntity();
+    public Wishlist inputAddWishlistDtoMock() {
+        var input = new Wishlist();
+        var customer = new com.example.wishlist.domain.Customer();
+        customer.setName("Joa0 da Silva");
+        var product = new com.example.wishlist.domain.Product();
         product.setName("TV");
         product.setPrice(new BigDecimal("1200"));
-        var list = new ArrayList<ProductEntity>();
+        input.setCustomer(customer);
+        input.setProducts(List.of(product));
+        return input;
+    }
+
+    @DisplayName("Cria mock da wishlist domain")
+    private Wishlist wishlistDomainMock() {
+        var customer = new Customer();
+        customer.setName("Joao silva");
+        var product = new Product();
+        product.setName("TV");
+        product.setPrice(new BigDecimal("1200"));
+        var list = new ArrayList<Product>();
         list.add(product);
-        var wishlist = new WishlistEntity();
+        var wishlist = new Wishlist();
         wishlist.setId("1");
         wishlist.setCustomer(customer);
         wishlist.setProducts(list);

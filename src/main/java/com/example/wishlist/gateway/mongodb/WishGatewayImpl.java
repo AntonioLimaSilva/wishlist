@@ -20,7 +20,8 @@ public class WishGatewayImpl implements WishGateway {
 
     @Override
     public Wishlist save(Wishlist wishlist) {
-        return wishlistRepository.save(new WishlistEntity(wishlist)).toDomain();
+        var entity = wishlistRepository.save(new WishlistEntity(wishlist));
+        return entity.toDomain();
     }
 
     @Override
