@@ -3,18 +3,15 @@ package com.example.wishlist.gateway.api.controller;
 import com.example.wishlist.commons.uitl.JsonUtil;
 import com.example.wishlist.domain.Wishlist;
 import com.example.wishlist.gateway.WishGateway;
+import com.example.wishlist.gateway.api.controller.dto.*;
 import com.example.wishlist.gateway.exceptionhandler.ApiExceptionHandler;
-import com.example.wishlist.gateway.mongodb.WishGatewayImpl;
 import com.example.wishlist.gateway.mongodb.entity.customer.CustomerEntity;
 import com.example.wishlist.gateway.mongodb.entity.product.ProductEntity;
 import com.example.wishlist.gateway.mongodb.entity.wishlist.WishlistEntity;
 import com.example.wishlist.gateway.mongodb.repository.WishlistRepository;
 import com.example.wishlist.usecase.wishlist.add.AddProductWishlistUseCase;
-import com.example.wishlist.usecase.wishlist.add.InputAddProductWishlistDto;
 import com.example.wishlist.usecase.wishlist.find.FindProductWishlistUseCase;
-import com.example.wishlist.usecase.wishlist.find.InputFindProductWishlistDto;
 import com.example.wishlist.usecase.wishlist.list.ListProductsWishlistUseCase;
-import com.example.wishlist.usecase.wishlist.remove.InputRemoveProductWishlistDto;
 import com.example.wishlist.usecase.wishlist.remove.RemoveProductWishlistUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -36,7 +33,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -102,10 +98,10 @@ class WishlistControllerTest {
 	public void shouldReturnStatusBadRequestWhenAttributeRequired() throws Exception {
 
 		var input = inputAddWishlistDtoMock();
-		var list = new HashSet<InputAddProductWishlistDto.InpAddProduct>();
+		var list = new HashSet<ProductDto>();
 
 		IntStream.range(0, 21).forEach(i -> {
-			var prod1 = new InputAddProductWishlistDto.InpAddProduct();
+			var prod1 = new ProductDto();
 			prod1.setPrice(new BigDecimal("100"));
 			prod1.setName("TV"+i);
 			list.add(prod1);
@@ -168,10 +164,10 @@ class WishlistControllerTest {
 	@DisplayName("Cria mock do input")
 	private InputAddProductWishlistDto inputAddWishlistDtoMock() {
 		var inputAddWishlistDto = new InputAddProductWishlistDto();
-		var inputCustomer = new InputAddProductWishlistDto.InpAddCustomer();
+		var inputCustomer = new CustomerDto();
 		inputCustomer.setName("Joao Silva");
 
-		var inputProductDto = new InputAddProductWishlistDto.InpAddProduct();
+		var inputProductDto = new ProductDto();
 		inputProductDto.setName("TV");
 		inputProductDto.setPrice(new BigDecimal("2300"));
 

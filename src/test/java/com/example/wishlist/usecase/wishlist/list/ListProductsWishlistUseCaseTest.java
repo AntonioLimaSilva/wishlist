@@ -1,6 +1,7 @@
 package com.example.wishlist.usecase.wishlist.list;
 
 import com.example.wishlist.gateway.WishGateway;
+import com.example.wishlist.gateway.api.controller.dto.InputListProductsWishlistDto;
 import com.example.wishlist.gateway.mongodb.WishGatewayImpl;
 import com.example.wishlist.gateway.mongodb.entity.customer.CustomerEntity;
 import com.example.wishlist.gateway.mongodb.entity.product.ProductEntity;

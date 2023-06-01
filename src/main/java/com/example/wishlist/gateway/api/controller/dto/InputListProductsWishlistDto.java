@@ -1,4 +1,4 @@
-package com.example.wishlist.usecase.wishlist.list;
+package com.example.wishlist.gateway.api.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

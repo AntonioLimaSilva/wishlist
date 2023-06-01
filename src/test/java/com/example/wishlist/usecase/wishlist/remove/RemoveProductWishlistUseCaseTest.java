@@ -5,6 +5,7 @@ import com.example.wishlist.domain.Product;
 import com.example.wishlist.domain.Wishlist;
 import com.example.wishlist.exception.BusinessException;
 import com.example.wishlist.gateway.WishGateway;
+import com.example.wishlist.gateway.api.controller.dto.InputRemoveProductWishlistDto;
 import com.example.wishlist.gateway.mongodb.WishGatewayImpl;
 import com.example.wishlist.gateway.mongodb.entity.wishlist.WishlistEntity;
 import com.example.wishlist.gateway.mongodb.repository.WishlistRepository;

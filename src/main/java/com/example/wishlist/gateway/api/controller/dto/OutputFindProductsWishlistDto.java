@@ -1,9 +1,8 @@
-package com.example.wishlist.usecase.wishlist.find;
+package com.example.wishlist.gateway.api.controller.dto;
 
 import com.example.wishlist.domain.Customer;
 import com.example.wishlist.domain.Product;
 import com.example.wishlist.domain.Wishlist;
-import com.example.wishlist.usecase.wishlist.add.OutputAddProductWishlistDto;
 import lombok.Getter;
 import lombok.Setter;
 
