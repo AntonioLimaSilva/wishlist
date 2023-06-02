@@ -1,9 +1,14 @@
 FROM openjdk:17
 
-LABEL maintainer="luclimasilva23@gmail.com"
+WORKDIR /app
 
-ENV LANG C.UTF-8
+ARG JAR_FILE
 
-ADD target/*.jar /app/wishlist.jar
+COPY target/*.jar /app/api.jar
+COPY wait-for-it.sh /wait-for-it.sh
 
-CMD java -jar /app/wishlist.jar $APP_OPTIONS
+RUN chmod +x /wait-for-it.sh
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "api.jar"]

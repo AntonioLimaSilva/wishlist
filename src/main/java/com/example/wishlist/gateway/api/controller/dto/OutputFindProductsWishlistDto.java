@@ -1,7 +1,5 @@
 package com.example.wishlist.gateway.api.controller.dto;
 
-import com.example.wishlist.domain.Customer;
-import com.example.wishlist.domain.Product;
 import com.example.wishlist.domain.Wishlist;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,36 +12,15 @@ import java.util.stream.Collectors;
 @Setter
 public class OutputFindProductsWishlistDto {
     private String id;
-    private OutFindCustomer customer;
+    private CustomerDto customer;
     private BigDecimal total;
-    private List<OutFindProduct> products;
+    private List<ProductDto> products;
 
     public OutputFindProductsWishlistDto(Wishlist wishlist) {
         this.id = wishlist.getId();
         this.total = wishlist.getTotal();
-        this.customer = new OutputFindProductsWishlistDto.OutFindCustomer(wishlist.getCustomer());
-        this.products = wishlist.getProducts().stream().map(OutputFindProductsWishlistDto.OutFindProduct::new).collect(Collectors.toList());
+        this.customer = new CustomerDto(wishlist.getCustomer());
+        this.products = wishlist.getProducts().stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
-    @Getter
-    @Setter
-    public static class OutFindProduct {
-        private String name;
-        private BigDecimal price;
-
-        public OutFindProduct(Product product) {
-            this.name = product.getName();
-            this.price = product.getPrice();
-        }
-    }
-
-    @Getter
-    @Setter
-    public static class OutFindCustomer {
-        private String name;
-
-        public OutFindCustomer(Customer customer) {
-            this.name = customer.getName();
-        }
-    }
 }

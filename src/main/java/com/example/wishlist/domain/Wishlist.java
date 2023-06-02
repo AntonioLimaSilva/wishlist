@@ -1,7 +1,5 @@
 package com.example.wishlist.domain;
 
-
-
 import com.example.wishlist.exception.BusinessException;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,11 +13,9 @@ import java.util.stream.Collectors;
 @Setter
 public class Wishlist {
 
-
     private String id;
     private Customer customer;
     private BigDecimal total;
-
     private List<Product> products = new ArrayList<>();
 
 

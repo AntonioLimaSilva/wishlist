@@ -1,9 +1,13 @@
 # Use root/example as user/password credentials
 version: '3.1'
 
+networks:
+  wishlist-network:
+    driver: bridge
+
 services:
 
-  db:
+  mongodb:
     container_name: mongo
     image: mongo
     restart: always
@@ -13,17 +17,35 @@ services:
     ports:
       - '27017-27019:27017-27019'
     volumes:
-      - db:/data/db
+      - mongodb:/data/mongodb
+    networks:
+      - wishlist-network
 
   mongo-express:
     image: mongo-express
     restart: always
     ports:
-      - 8081:8081
+      - "8081:8081"
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root123
-      ME_CONFIG_MONGODB_URL: mongodb://root:root123@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://root:root123@mongo:27017?useUnifiedTopology=true
+    networks:
+      - wishlist-network
+    depends_on:
+      - mongodb
+
+  wishlist-api:
+    image: luclimasilva23/wishlist:0.2
+    command: [ "/wait-for-it.sh", "mongodb:3306", "-t", "30", "--", "java", "-jar", "api.jar" ]
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://root:root123@mongodb/wishlist?authSource=admin
+    ports:
+      - "8080:8080"
+    networks:
+      - wishlist-network
+    depends_on:
+      - mongodb
 
 volumes:
-  db:
+  mongodb:

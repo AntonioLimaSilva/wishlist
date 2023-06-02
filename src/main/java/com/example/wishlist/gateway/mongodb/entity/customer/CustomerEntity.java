@@ -1,7 +1,6 @@
 package com.example.wishlist.gateway.mongodb.entity.customer;
 
 import com.example.wishlist.domain.Customer;
-import com.example.wishlist.domain.Wishlist;
 import lombok.Getter;
 import lombok.Setter;
 
